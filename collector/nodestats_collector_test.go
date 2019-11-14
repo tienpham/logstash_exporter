@@ -2,6 +2,7 @@ package collector
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -183,13 +184,9 @@ var queueJSON = []byte(`
       "failures" : 0
     },
     "queue" : {
-      "events" : 0,
+      "events_count" : 12,
       "type" : "persisted",
-      "capacity" : {
-        "page_capacity_in_bytes" : 262144000,
-        "max_queue_size_in_bytes" : 8589934592,
-        "max_unread_events" : 12
-      },
+      "max_queue_size_in_bytes" : 8589934592,
       "data" : {
         "path" : "/path/to/data/queue",
         "free_space_in_bytes" : 89280552960,
@@ -280,7 +277,7 @@ func TestPipelineNoQueueStats(t *testing.T) {
 	m := &MockHTTPHandler{ReturnJSON: noQueueJSON}
 	getMetrics(m, &response)
 
-	if response.Pipeline.Queue.Capacity.MaxUnreadEvents == 12 {
+	if response.Pipeline.Queue.Events == 12 {
 		t.Fail()
 	}
 }
@@ -291,7 +288,8 @@ func TestPipelineQueueStats(t *testing.T) {
 	m := &MockHTTPHandler{ReturnJSON: queueJSON}
 	getMetrics(m, &response)
 
-	if response.Pipeline.Queue.Capacity.MaxUnreadEvents != 12 {
+	fmt.Println(response.Pipeline.Queue.Events)
+	if response.Pipeline.Queue.Events != 12 {
 		t.Fail()
 	}
 }

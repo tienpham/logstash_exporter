@@ -192,6 +192,13 @@ func NewNodeStatsCollector(logstashEndpoint string) (Collector, error) {
 			nil,
 		),
 
+		PipelineQueuePushDuration: prometheus.NewDesc(
+			prometheus.BuildFQName(Namespace, subsystem, "pipeline_queue_push_duration_seconds_total"),
+			"pipeline_queue_push_duration_seconds",
+			[]string{"pipeline"},
+			nil,
+		),
+
 		PipelineEventsIn: prometheus.NewDesc(
 			prometheus.BuildFQName(Namespace, subsystem, "pipeline_events_in_total"),
 			"pipeline_events_in_total",

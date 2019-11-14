@@ -3,17 +3,18 @@ package collector
 // Pipeline type
 type Pipeline struct {
 	Events struct {
-		DurationInMillis int `json:"duration_in_millis"`
-		In               int `json:"in"`
-		Filtered         int `json:"filtered"`
-		Out              int `json:"out"`
+		QueuePushDurationInMillis int `json:"queue_push_duration_in_millis"`
+		DurationInMillis          int `json:"duration_in_millis"`
+		In                        int `json:"in"`
+		Filtered                  int `json:"filtered"`
+		Out                       int `json:"out"`
 	} `json:"events"`
 	Plugins struct {
 		Inputs []struct {
 			ID     string `json:"id"`
 			Events struct {
-				In  int `json:"in"`
-				Out int `json:"out"`
+				QueuePushDurationInMillis int `json:"queue_push_duration_in_millis"`
+				Out                       int `json:"out"`
 			} `json:"events"`
 			Name string `json:"name"`
 		} `json:"inputs,omitempty"`
@@ -35,8 +36,9 @@ type Pipeline struct {
 		Outputs []struct {
 			ID     string `json:"id"`
 			Events struct {
-				In  int `json:"in"`
-				Out int `json:"out"`
+				In               int `json:"in"`
+				Out              int `json:"out"`
+				DurationInMillis int `json:"duration_in_millis"`
 			} `json:"events"`
 			Name string `json:"name"`
 		} `json:"outputs"`
@@ -49,18 +51,10 @@ type Pipeline struct {
 		Failures             int         `json:"failures"`
 	} `json:"reloads"`
 	Queue struct {
-		Events   int    `json:"events"`
-		Type     string `json:"type"`
-		Capacity struct {
-			PageCapacityInBytes int   `json:"page_capacity_in_bytes"`
-			MaxQueueSizeInBytes int64 `json:"max_queue_size_in_bytes"`
-			MaxUnreadEvents     int   `json:"max_unread_events"`
-		} `json:"capacity"`
-		Data struct {
-			Path             string `json:"path"`
-			FreeSpaceInBytes int64  `json:"free_space_in_bytes"`
-			StorageType      string `json:"storage_type"`
-		} `json:"data"`
+		Events              int    `json:"events_count"`
+		Type                string `json:"type"`
+		QueueSizeInBytes    int    `json:"queue_size_in_bytes"`
+		MaxQueueSizeInBytes int64  `json:"max_queue_size_in_bytes"`
 	} `json:"queue"`
 	DeadLetterQueue struct {
 		QueueSizeInBytes int `json:"queue_size_in_bytes"`
